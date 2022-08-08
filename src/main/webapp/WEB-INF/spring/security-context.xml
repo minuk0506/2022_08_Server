@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-5.3.xsd">
+
+	<context:component-scan base-package="com.callor.todo.service.auth"/>
+	
+	<sec:http>
+		<sec:intercept-url pattern="/user/join"
+			access="permitAll" />
+		<sec:intercept-url pattern="/user/login"
+			access="permitAll" />
+		<sec:intercept-url pattern="/user/mypage"
+			access="isAuthenticated()" />
+		<sec:intercept-url pattern="/admin/**"
+			access="isAuthenticated() AND hasRole('ROLE_ADMIN')" />
+		<sec:intercept-url pattern="/"
+			access="isAuthenticated()" />
+		<sec:form-login
+			login-page="/user/login?error=LOGIN_NEED"
+			login-processing-url="/user/login" username-parameter="username"
+			password-parameter="password" />
+		<sec:logout logout-url="/logout" invalidate-session="true"
+			delete-cookies="JSESSIONID" logout-success-url="/user/login" />
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:user-service>
+				<sec:user name="1234" authorities="ROLE_USER"
+					password="{noop}aa1234" />
+			</sec:user-service>
+		</sec:authentication-provider>
+		<sec:authentication-provider
+			ref="authenticationProvider" />
+	</sec:authentication-manager>
+
+</beans>
