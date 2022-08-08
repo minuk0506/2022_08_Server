@@ -8,3 +8,5 @@
 * MySQL 8.x
 * MyBatis 3.5.x
 
+## 프로젝트 수행
+* minuk0506@naver.com
