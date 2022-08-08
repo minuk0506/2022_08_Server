@@ -40,5 +40,29 @@
 	</insert>
 	<update id="update"></update>
 	<delete id="delete"></delete>
-
+	
+<select id="create_user_table">
+ 	CREATE TABLE IF NOT EXISTS tbl_users (
+		username VARCHAR(20) PRIMARY KEY,
+		password  VARCHAR(255) NOT NULL,
+		Enabled BOOLEAN DEFAULT FALSE,
+		AccountNonExpired  BOOLEAN DEFAULT TRUE,
+		AccountNonLocked  BOOLEAN  DEFAULT TRUE,
+		CredentialsNonExpired  BOOLEAN  DEFAULT TRUE,
+		
+		email  VARCHAR(30),
+		tel  VARCHAR(15),
+		realname  VARCHAR(20),
+		nickname  VARCHAR(20)
+	)
+ 	</select>
+ 	
+ 	<select id="create_auth_table">
+ 	CREATE TABLE IF NOT EXISTS tbl_authorities (
+		seq BIGINT AUTO_INCREMENT PRIMARY KEY,
+    	username VARCHAR(20),
+    	authority VARCHAR(20)
+	)
+ 	</select>
+ 	
 </mapper>
