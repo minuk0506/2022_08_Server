@@ -8,11 +8,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.callor.todo.model.UserVO;
-import com.callor.todo.persistance.UserDao;
 
 @Service("authenticationProvider")
 public class AuthenticationProviderImpl  implements AuthenticationProvider{
@@ -21,22 +20,25 @@ public class AuthenticationProviderImpl  implements AuthenticationProvider{
 	@Qualifier("userDetailsService")
 	UserDetailsService userService;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
-		String username = (String) authentication.getPrincipal().toString();
-		String password = (String) authentication.getCredentials().toString();
+		String username = (String) authentication.getPrincipal();
+		String password = (String) authentication.getCredentials();
 		
 		UserVO user = (UserVO) userService.loadUserByUsername(username);
 		
-		if(user == null) {
-			throw new UsernameNotFoundException(username+"은 회원가입이 필요");
+		if(passwordEncoder.matches(password,user.getPassword()) == false) {
+			throw new BadCredentialsException("비밀번호가 잘못되었습니다");
 		}
 		
-		if(user.getPassword().equals(password) == false) {
-			throw new BadCredentialsException("비밀번호 오류");
+		if(user.isEnabled() == false) {
+			throw new BadCredentialsException(
+					username + " 은 회원가입절차가 완료되지 않음");
 		}
-		
 		UsernamePasswordAuthenticationToken
 		token = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
 		

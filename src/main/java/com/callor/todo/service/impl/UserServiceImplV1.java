@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +19,20 @@ public class UserServiceImplV1 implements UserService{
 	@Autowired
 	private UserDao userDao;
 	
-	@Bean("passwordEncoder")
-	public PasswordEncoder getPassword() {
-		return new BCryptPasswordEncoder();
-	}
+	@Autowired
+	@Qualifier("passwordEncoder")
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public void create_user_table() {
-		userDao.create_user_table();		
+		userDao.create_user_table();
+		
 	}
 
 	@Override
 	public void create_auth_table() {
-		userDao.create_auth_table();		
+		userDao.create_auth_table();
+		
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class UserServiceImplV1 implements UserService{
 		
 		}
 		
-		String encPassword = getPassword().encode(vo.getPassword());
+		String encPassword = passwordEncoder.encode(vo.getPassword());
 		vo.setPassword(encPassword);
 		userDao.role_insert(auths);
 		return userDao.insert(vo);

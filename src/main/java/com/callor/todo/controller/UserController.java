@@ -28,7 +28,8 @@ public class UserController {
 		return null;
 	}
 	@RequestMapping(value="/join", method=RequestMethod.GET)
-	public String join() {
+	public String join(Model model) {
+		model.addAttribute("LAYOUT","JOIN");
 		return null;
 	}
 	@RequestMapping(value="/join", method=RequestMethod.POST)

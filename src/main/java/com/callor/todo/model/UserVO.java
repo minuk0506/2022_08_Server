@@ -25,14 +25,14 @@ public class UserVO implements UserDetails { // extends User {
 	private long id;
 	private String username;
 	private String password;
-	private boolean isEnabled;
-	private boolean isAccountNonExpired;
-	private boolean isAccountNonLocked;
-	private boolean isCredentialsNonExpired;
+	private boolean Enabled;
+	private boolean AccountNonExpired;
+	private boolean AccountNonLocked;
+	private boolean CredentialsNonExpired;
 	private Collection<? extends GrantedAuthority> authorities; // getAuthorities
 
 	private String email;
-	private String phone;
+	private String tel;
 	private String address;
 	
 	private String realname;

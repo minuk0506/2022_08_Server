@@ -22,13 +22,15 @@
 		password,
 		enabled,
 		realname,
-		nickname
+		nickname,
+		email
 		) value (
 		#{username},
 		#{password},
 		#{enabled},
 		#{realname},
-		#{nickname}
+		#{nickname},
+		#{email}
 		)
 	</insert>
 	<insert id="role_insert" parameterType="AuthorityVO">
